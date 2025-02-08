@@ -9,7 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "USUARIO")
@@ -23,19 +27,36 @@ public class UsuarioVO {
 	}
 	
 	public UsuarioVO() {}
+	
+	
+	@PrePersist
+	@PreUpdate
+	public void preProcess() {
+		if (usu_name != null) {
+			usu_name.toUpperCase();			
+		}
+		
+		if (usu_email != null) {
+			usu_email.toUpperCase();			
+		}	
+	}
 
 	@Id
 	@GeneratedValue(strategy  = GenerationType.IDENTITY)	
 	private Long usu_id;
 	
+	@NotNull(message = "Campo ''nome'' no body deve ser informado")
 	@JsonProperty("nome")
 	@Column(name = "usu_name")
 	private String usu_name;
 	
+	@NotNull(message = "Campo ''email'' no body deve ser informado")
+	@Email(message = "Email deve ser válido")
 	@JsonProperty("email")
 	@Column(name = "usu_email")
 	private String usu_email;
 	
+	@NotNull(message = "Campo ''senha'' no body deve ser informado")
 	@JsonProperty("senha")
 	@Column(name = "usu_password")
 	private String usu_password;
