@@ -60,10 +60,10 @@ public class UsuarioVO {
 	@JsonProperty("senha")
 	@Column(name = "usu_password")
 	private String usu_password;
-	
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(usu_id);
+		return Objects.hash(usu_password);
 	}
 	
 	@Override
@@ -75,8 +75,9 @@ public class UsuarioVO {
 		if (getClass() != obj.getClass())
 			return false;
 		UsuarioVO other = (UsuarioVO) obj;
-		return Objects.equals(usu_id, other.usu_id);
-	}
+		return Objects.equals(usu_password, other.usu_password);
+	}	
+	
 	
 	public Long getUsu_id() {
 		return usu_id;

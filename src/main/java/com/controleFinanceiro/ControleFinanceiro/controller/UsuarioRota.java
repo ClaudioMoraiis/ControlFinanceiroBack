@@ -1,5 +1,7 @@
 package com.controleFinanceiro.ControleFinanceiro.controller;
 
+import java.security.NoSuchAlgorithmException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.controleFinanceiro.ControleFinanceiro.DTO.UsuarioLoginDTO;
 import com.controleFinanceiro.ControleFinanceiro.Services.UsuarioService;
 import com.controleFinanceiro.ControleFinanceiro.VO.UsuarioVO;
 
@@ -26,22 +29,8 @@ public class UsuarioRota {
 	private UsuarioService service;
 
 	@PostMapping(value = "/cadastrar")
-	public ResponseEntity<String> insertUser(@Valid @RequestBody(required = true) UsuarioVO mUsuario) {
-		
-		if ((mUsuario == null) && (mUsuario.getUsu_name() == null)) {
-			ResponseEntity.ok("Campo ''nome'' é obrigatório");			
-		}
-		
-		if ((mUsuario == null) && (mUsuario.getUsu_email() == null)) {
-			ResponseEntity.ok("Campo ''email'' é obrigatório");
-		}
-		
-		if ((mUsuario == null) && (mUsuario.getUsu_password() == null)) {
-			ResponseEntity.ok("Campo ''senha'' é obrigatório");
-		}
-		
-		service.insertUser(mUsuario);
-		return ResponseEntity.ok().body("Usuario inserido");
+	public ResponseEntity<?> insertUser(@Valid @RequestBody(required = true) UsuarioVO mUsuario) throws NoSuchAlgorithmException {
+		return service.insertUser(mUsuario);		
 	}
 
 	@SuppressWarnings("unused")
@@ -70,6 +59,13 @@ public class UsuarioRota {
 		} else {
 			return ResponseEntity.ok(mUsuarioVO);
 		}
+	}	
+	
+	@PostMapping(value = "/login")
+	public ResponseEntity<?> login(@Valid @RequestBody UsuarioLoginDTO loginDTO){
+		return service.login(loginDTO);
 	}
+	
+	
 
 };
