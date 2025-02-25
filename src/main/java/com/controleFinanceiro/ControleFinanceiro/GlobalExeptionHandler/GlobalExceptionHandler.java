@@ -21,11 +21,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationError(MethodArgumentNotValidException e) {
-        StringBuilder errorMessage = new StringBuilder("Erros de validação: ");
+        StringBuilder errorMessage = new StringBuilder("");
         
         BindingResult bindingResult = e.getBindingResult();
         for (ObjectError error : bindingResult.getAllErrors()) {
-            errorMessage.append(error.getDefaultMessage()).append("; ");
+            errorMessage.append(error.getDefaultMessage()).append("");
         }
         
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage.toString());

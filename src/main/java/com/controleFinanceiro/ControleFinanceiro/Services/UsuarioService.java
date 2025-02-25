@@ -1,6 +1,7 @@
 package com.controleFinanceiro.ControleFinanceiro.Services;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,14 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.controleFinanceiro.ControleFinanceiro.DTO.UsuarioLoginDTO;
+import com.controleFinanceiro.ControleFinanceiro.VO.UsuarioToken;
 import com.controleFinanceiro.ControleFinanceiro.VO.UsuarioVO;
 import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioRepository;
+import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioTokenRepository;
 
 @Service
 public class UsuarioService {
 	
 	@Autowired
-	private UsuarioRepository repository;
+	private UsuarioRepository repository;	
+
 	    	
 	public ResponseEntity<?> insertUser(UsuarioVO mUsuarioVO) throws NoSuchAlgorithmException {		
 		
@@ -59,7 +63,7 @@ public class UsuarioService {
 		if (usuarioVO.getUsu_password().equals(loginDTO.getUsu_password())) {
 			return ResponseEntity.ok(true);
 		} else {
-			return ResponseEntity.ok("Senha inválida");
+			return ResponseEntity.ok("E-mail ou senha inválida");
 		}
 	}
 }
