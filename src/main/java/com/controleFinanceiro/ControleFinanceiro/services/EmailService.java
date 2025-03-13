@@ -1,7 +1,6 @@
-package com.controleFinanceiro.ControleFinanceiro.Services;
+package com.controleFinanceiro.ControleFinanceiro.services;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,16 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import com.controleFinanceiro.ControleFinanceiro.VO.UsuarioToken;
-import com.controleFinanceiro.ControleFinanceiro.VO.UsuarioVO;
+import com.controleFinanceiro.ControleFinanceiro.vo.UsuarioToken;
+import com.controleFinanceiro.ControleFinanceiro.vo.UsuarioVO;
 import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioRepository;
 import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioTokenRepository;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.validation.constraints.Email;
 
 @Service
 public class EmailService {

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.controleFinanceiro.ControleFinanceiro.Services.ContasService;
-import com.controleFinanceiro.ControleFinanceiro.VO.ContasVO;
+import com.controleFinanceiro.ControleFinanceiro.dto.ContasDTO;
+import com.controleFinanceiro.ControleFinanceiro.services.ContasService;
 
 import jakarta.validation.Valid;
 
@@ -21,11 +21,9 @@ public class ContasRota {
 	private ContasService service;	
 	
 	@PostMapping(value = "/cadastrar")
-	public ResponseEntity<?> insert(@Valid @RequestBody(required = true) ContasVO mContaVO){
-		return service.insert(mContaVO);
-	}
-	
-	
+	public ResponseEntity<?> insert(@Valid @RequestBody(required = true) ContasDTO mContaDTO){
+		return service.insert(mContaDTO);
+	}	
 	
 	
 

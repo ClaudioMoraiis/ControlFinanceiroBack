@@ -1,4 +1,4 @@
-package com.controleFinanceiro.ControleFinanceiro.GlobalExeptionHandler;
+package com.controleFinanceiro.ControleFinanceiro.globalExeptionHandler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

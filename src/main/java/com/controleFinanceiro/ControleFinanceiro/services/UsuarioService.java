@@ -1,18 +1,15 @@
-package com.controleFinanceiro.ControleFinanceiro.Services;
+package com.controleFinanceiro.ControleFinanceiro.services;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.controleFinanceiro.ControleFinanceiro.DTO.UsuarioLoginDTO;
-import com.controleFinanceiro.ControleFinanceiro.VO.UsuarioToken;
-import com.controleFinanceiro.ControleFinanceiro.VO.UsuarioVO;
+import com.controleFinanceiro.ControleFinanceiro.dto.UsuarioLoginDTO;
+import com.controleFinanceiro.ControleFinanceiro.vo.UsuarioVO;
 import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioRepository;
-import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioTokenRepository;
 
 @Service
 public class UsuarioService {

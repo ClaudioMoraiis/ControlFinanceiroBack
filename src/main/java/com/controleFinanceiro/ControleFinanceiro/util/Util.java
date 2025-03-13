@@ -1,4 +1,4 @@
-package com.controleFinanceiro.ControleFinanceiro.Util;
+package com.controleFinanceiro.ControleFinanceiro.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.controleFinanceiro.ControleFinanceiro.VO.UsuarioToken;
+import com.controleFinanceiro.ControleFinanceiro.vo.UsuarioToken;
 
 public interface UsuarioTokenRepository extends JpaRepository<UsuarioToken, Long> {
 	@Query("SELECT u FROM UsuarioToken u WHERE u.uto_token = :token")

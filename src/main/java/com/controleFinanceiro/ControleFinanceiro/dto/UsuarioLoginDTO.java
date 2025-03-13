@@ -1,4 +1,4 @@
-package com.controleFinanceiro.ControleFinanceiro.DTO;
+package com.controleFinanceiro.ControleFinanceiro.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,8 +1,7 @@
-package com.controleFinanceiro.ControleFinanceiro.VO;
+package com.controleFinanceiro.ControleFinanceiro.vo;
 
+import java.math.BigDecimal;
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,41 +10,49 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "CONTAS")
-public class ContasVO {
+public class ContasVO {	
 	@Id
 	@GeneratedValue(strategy  = GenerationType.IDENTITY)	
 	private Long con_id;
-	
-	@JsonProperty("idUsuario")
-	@NotNull(message = "Campo 'idUsuario' no body deve ser informado")
-    @ManyToOne
-    @JoinColumn(name = "con_usu_id", referencedColumnName = "usu_id", nullable = false)
+
+	@ManyToOne
+	@JoinColumn(name = "con_user_id", referencedColumnName = "usu_id", nullable = false)
     private UsuarioVO usuario;
-	
-	@NotNull(message = "Campo 'nome' no body deve ser informado")
-	@JsonProperty("nome")
+    
+	@Column(name = "con_nome")
 	private String con_nome;
 	
-	@NotNull(message = "Campo 'valor' no body deve ser informado")
-	@JsonProperty("valor")
-	private Float con_valor;
+	@Column(name = "con_valor", precision = 10, scale = 2)
+	private BigDecimal con_valor;
 	
-	@NotNull(message = "Campo 'tipo' no body deve ser informado")
-	@JsonProperty("tipo")
+	@Column(name = "con_tipo")
 	private String con_tipo;
 	
-	public ContasVO(String con_nome, Float con_valor, String con_tipo) {
+	public ContasVO(String con_nome, BigDecimal con_valor, String con_tipo) {
 		this.con_nome = con_nome;
 		this.con_valor = con_valor;
 		this.con_tipo = con_tipo;
-	}	
-	
+	}
+		
 	public ContasVO() {};
+	
+	@PrePersist
+	@PreUpdate
+	public void preProcess() {
+		if (con_nome != null) {
+			con_nome = con_nome.toUpperCase();			
+		}
+		
+		if (con_tipo != null) {
+			con_tipo = con_tipo.toUpperCase();			
+		}	
+	}	
 	
 	@Override
 	public String toString() {
@@ -58,10 +65,10 @@ public class ContasVO {
 	public void setCon_nome(String con_nome) {
 		this.con_nome = con_nome;
 	}
-	public Float getCon_valor() {
+	public BigDecimal getCon_valor() {
 		return con_valor;
 	}
-	public void setCon_valor(Float con_valor) {
+	public void setCon_valor(BigDecimal con_valor) {
 		this.con_valor = con_valor;
 	}
 	public String getCon_tipo() {
@@ -69,6 +76,15 @@ public class ContasVO {
 	}
 	public void setCon_tipo(String con_tipo) {
 		this.con_tipo = con_tipo;
+	}
+	
+
+	public UsuarioVO getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(UsuarioVO usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override

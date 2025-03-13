@@ -1,4 +1,4 @@
-package com.controleFinanceiro.ControleFinanceiro.VO;
+package com.controleFinanceiro.ControleFinanceiro.vo;
 
 import java.util.Objects;
 
@@ -32,11 +32,11 @@ public class UsuarioVO {
 	@PreUpdate
 	public void preProcess() {
 		if (usu_name != null) {
-			usu_name.toUpperCase();			
+			usu_name = usu_name.toUpperCase();			
 		}
 		
 		if (usu_email != null) {
-			usu_email.toUpperCase();			
+			usu_email = usu_email.toUpperCase();			
 		}	
 	}
 
