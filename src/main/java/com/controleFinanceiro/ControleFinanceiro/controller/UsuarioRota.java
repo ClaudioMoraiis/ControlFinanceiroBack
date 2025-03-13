@@ -42,7 +42,6 @@ public class UsuarioRota {
 		return service.insertUser(mUsuario);		
 	}
 
-	@SuppressWarnings("unused")
 	@GetMapping(value = "/nome")
 	public ResponseEntity<?> findByName(@RequestParam(value = "nome", required = false) String name) {
 		UsuarioVO mobj = service.findByName(name.toUpperCase());
@@ -83,6 +82,12 @@ public class UsuarioRota {
 	@PutMapping("/redefinir-senha")
 	public ResponseEntity<?> redefinirSenha(@RequestBody Map<String, String> request) {
 	    return emailService.redefinirSenha(request);
+	}
+	
+	
+	@GetMapping("/BuscarUsuarioPorEmail")
+	public ResponseEntity<?> findUserByEmail(@RequestParam String email){
+		return emailService.findUserByEmail(email);		
 	}
 
 	

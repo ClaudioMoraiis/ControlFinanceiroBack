@@ -16,7 +16,6 @@ public class UsuarioLoginDTO {
 	@NotNull(message = "O campo 'senha' é obrigatório.")
 	private String usu_password;
 
-	// Getters e Setters
 	public String getUsu_email() {
 		return usu_email;
 	}

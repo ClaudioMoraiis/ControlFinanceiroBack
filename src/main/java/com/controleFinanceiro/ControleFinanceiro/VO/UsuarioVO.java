@@ -26,8 +26,7 @@ public class UsuarioVO {
 		this.usu_password = usu_password;
 	}
 	
-	public UsuarioVO() {}
-	
+	public UsuarioVO() {}	
 	
 	@PrePersist
 	@PreUpdate

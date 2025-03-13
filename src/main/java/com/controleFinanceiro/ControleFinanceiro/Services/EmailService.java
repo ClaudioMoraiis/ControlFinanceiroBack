@@ -107,6 +107,14 @@ public class EmailService {
 
 		return ResponseEntity.ok("Senha redefinida com sucesso!");
 	}	
+	
+	
+	public ResponseEntity<?> findUserByEmail(String email){
+		UsuarioVO usuarioVO = new UsuarioVO();		
+		usuarioVO = repository.findByEmail(email);		
+		
+		return ResponseEntity.ok(usuarioVO.getUsu_name());
+	}
 
 
 

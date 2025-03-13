@@ -57,7 +57,7 @@ public class UsuarioService {
 		UsuarioVO usuarioVO = repository.findByEmail(loginDTO.getUsu_email());
 		
 		if(usuarioVO == null) {
-			return ResponseEntity.ok("Não existe usuário com esse e-mail cadastrado");
+			return ResponseEntity.ok("E-mail ou senha inválida");
 		}
 		
 		if (usuarioVO.getUsu_password().equals(loginDTO.getUsu_password())) {
