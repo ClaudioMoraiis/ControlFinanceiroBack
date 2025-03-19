@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleMessageNotReadable(HttpMessageNotReadableException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                             .body("Corpo da requisição vazio ou inválido");
+                             .body("Corpo da requisição vazio ou inválido\n" + e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericError(Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor\n" + e.getMessage());
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)

@@ -1,6 +1,8 @@
 package com.controleFinanceiro.ControleFinanceiro.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,12 +26,25 @@ public class ContasDTO {
 	@JsonProperty("usuarioID")
 	@NotNull(message = "Campo ''usuarioId'' no body deve ser informado")
 	private Long usuarioID;
-	
-	public ContasDTO(String nomeConta, BigDecimal valor, String tipo, Long usuarioID) {
+
+	@JsonProperty("data")
+	@NotNull(message = "Campo ''data'' no body deve ser informado")
+	private LocalDate data;
+
+	public LocalDate getData() {
+		return data;
+	}
+
+	public void setData(LocalDate data) {
+		this.data = data;
+	}
+
+	public ContasDTO(String nomeConta, BigDecimal valor, String tipo, Long usuarioID, LocalDate data) {
 		this.nome = nomeConta;
 		this.valor = valor;
 		this.tipo = tipo;
 		this.usuarioID = usuarioID;
+		this.data = data;
 	}
 	
 	public ContasDTO() {};

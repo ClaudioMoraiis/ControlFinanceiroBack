@@ -77,7 +77,6 @@ public class EmailService {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("Erro ao processar solicitação: " + e.getMessage());
 		}
-
 	}
 
 	public ResponseEntity<?> redefinirSenha(Map<String, String> request) {
@@ -103,16 +102,7 @@ public class EmailService {
 		repository.save(usuario);
 
 		return ResponseEntity.ok("Senha redefinida com sucesso!");
-	}	
-	
-	
-	public ResponseEntity<?> findUserByEmail(String email){
-		UsuarioVO usuarioVO = new UsuarioVO();		
-		usuarioVO = repository.findByEmail(email);		
-		
-		return ResponseEntity.ok(usuarioVO.getUsu_name());
 	}
-
 
 
 }

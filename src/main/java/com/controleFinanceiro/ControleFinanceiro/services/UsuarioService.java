@@ -47,8 +47,7 @@ public class UsuarioService {
 
 	public UsuarioVO findByEmail(String email) {
 		return repository.findByEmail(email);		
-	}	
-	
+	}
 
 	public ResponseEntity<?> login(UsuarioLoginDTO loginDTO) {
 		UsuarioVO usuarioVO = repository.findByEmail(loginDTO.getUsu_email());
@@ -63,4 +62,21 @@ public class UsuarioService {
 			return ResponseEntity.ok("E-mail ou senha inválida");
 		}
 	}
+
+	public ResponseEntity<?> getIdByEmail(String email){
+		Integer usuarioId = repository.getIdByEmail(email);
+		if ((usuarioId == null) || (usuarioId == 0)){
+			ResponseEntity.ok("Nenhum usuário localizado com esse email");
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(usuarioId);
+	}
+
+	public ResponseEntity<?> findUserByEmail(String email){
+		UsuarioVO usuarioVO = new UsuarioVO();
+		usuarioVO = repository.findByEmail(email);
+
+		return ResponseEntity.ok(usuarioVO.getUsu_name());
+	}
+
 }

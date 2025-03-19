@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,12 +82,14 @@ public class UsuarioRota {
 	}
 	
 	
-	@GetMapping("/BuscarUsuarioPorEmail")
+	@GetMapping("/nome-por-email")
 	public ResponseEntity<?> findUserByEmail(@RequestParam String email){
-		return emailService.findUserByEmail(email);		
+		ResponseEntity<?> teste = service.findUserByEmail(email);
+		return service.findUserByEmail(email);
 	}
 
-	
-	
-
-};
+	@GetMapping("idPorEmail")
+	public ResponseEntity<?> getIdByEmail(@RequestParam String email) {
+		return service.getIdByEmail(email);
+	}
+}

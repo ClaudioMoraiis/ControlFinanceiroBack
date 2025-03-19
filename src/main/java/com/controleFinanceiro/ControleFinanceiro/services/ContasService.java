@@ -11,6 +11,8 @@ import com.controleFinanceiro.ControleFinanceiro.vo.UsuarioVO;
 import com.controleFinanceiro.ControleFinanceiro.repositories.ContasRepository;
 import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioRepository;
 
+import java.util.List;
+
 @Service
 public class ContasService {
 	@Autowired
@@ -28,10 +30,15 @@ public class ContasService {
 		mContasVO.setCon_nome(mContasDTO.getNomeConta());
 		mContasVO.setCon_tipo(mContasDTO.getTipo());
 		mContasVO.setCon_valor(mContasDTO.getValor());
+		mContasVO.setCon_data(mContasDTO.getData());
 		mContasVO.setUsuario(mUsuarioVO);
 		repository.save(mContasVO);	
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso");		
+	}
+
+	public List<ContasVO> listarContas(Integer idUsuario){
+		return repository.listarContas(idUsuario);
 	}
 
 }

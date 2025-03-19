@@ -18,5 +18,8 @@ public interface UsuarioRepository extends JpaRepository<UsuarioVO, Long> {
 	
 	@Query("SELECT u FROM UsuarioVO u WHERE u.usu_id = :id")
 	UsuarioVO findById(@Param("id") Integer id);
+
+	@Query("SELECT usu_id FROM UsuarioVO WHERE usu_email = :email")
+	Integer getIdByEmail(@Param("email") String email);
 }
  
