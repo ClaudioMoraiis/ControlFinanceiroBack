@@ -27,7 +27,7 @@ public class ContasService {
 				.orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 		
 		ContasVO mContasVO = new ContasVO();
-		mContasVO.setCon_nome(mContasDTO.getNomeConta());
+		mContasVO.setCon_nome(mContasDTO.getNome());
 		mContasVO.setCon_tipo(mContasDTO.getTipo());
 		mContasVO.setCon_valor(mContasDTO.getValor());
 		mContasVO.setCon_data(mContasDTO.getData());

@@ -5,22 +5,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "CONTAS")
 public class ContasVO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "con_id")
     private Long con_id;
 
     @ManyToOne
@@ -56,7 +48,6 @@ public class ContasVO {
 
     public ContasVO() {
     }
-
     ;
 
     @PrePersist
@@ -81,6 +72,14 @@ public class ContasVO {
                 ", con_tipo='" + con_tipo + '\'' +
                 ", con_data=" + con_data +
                 '}';
+    }
+
+    public Long getCon_id() {
+        return con_id;
+    }
+
+    public void setCon_id(Long con_id) {
+        this.con_id = con_id;
     }
 
     public String getCon_nome() {

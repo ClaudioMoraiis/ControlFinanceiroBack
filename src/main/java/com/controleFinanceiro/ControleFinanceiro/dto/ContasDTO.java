@@ -10,19 +10,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 
 public class ContasDTO {
-	
-	@JsonProperty("nome")
+	@JsonProperty("con_id")
+	private Long id;
+
+	@JsonProperty("nomeConta")
 	@NotNull(message = "Campo ''nome'' no body deve ser informado")
 	private String nome;
-	
+
 	@JsonProperty("valor")
 	@NotNull(message = "Campo ''valor'' no body deve ser informado")
 	private BigDecimal valor;
-	
+
 	@JsonProperty("tipo")
 	@NotNull(message = "Campo ''tipo'' no body deve ser informado")
 	private String tipo;
-	
+
 	@JsonProperty("usuarioID")
 	@NotNull(message = "Campo ''usuarioId'' no body deve ser informado")
 	private Long usuarioID;
@@ -30,6 +32,58 @@ public class ContasDTO {
 	@JsonProperty("data")
 	@NotNull(message = "Campo ''data'' no body deve ser informado")
 	private LocalDate data;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public ContasDTO(Long id, String nome, BigDecimal valor, String tipo, Long usuarioID, LocalDate data) {
+		this.id = id;
+		this.nome = nome;
+		this.valor = valor;
+		this.tipo = tipo;
+		this.usuarioID = usuarioID;
+		this.data = data;
+	}
+
+	public ContasDTO(){
+	};
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public Long getUsuarioID() {
+		return usuarioID;
+	}
+
+	public void setUsuarioID(Long usuarioID) {
+		this.usuarioID = usuarioID;
+	}
 
 	public LocalDate getData() {
 		return data;
@@ -39,76 +93,33 @@ public class ContasDTO {
 		this.data = data;
 	}
 
-	public ContasDTO(String nomeConta, BigDecimal valor, String tipo, Long usuarioID, LocalDate data) {
-		this.nome = nomeConta;
-		this.valor = valor;
-		this.tipo = tipo;
-		this.usuarioID = usuarioID;
-		this.data = data;
-	}
-	
-	public ContasDTO() {};
-	
-	public String getNomeConta() {
-		return nome;
-	}
-	
-	public void setNomeConta(String nomeConta) {
-		this.nome = nomeConta;
-	}
-	
-	public BigDecimal getValor() {
-		return valor;
-	}
-	
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
-	
-	public String getTipo() {
-		return tipo;
-	}
-	
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-	
-	public Long getUsuarioID() {
-		return usuarioID;
-	}
-	
-	public void setUsuarioID(Long usuarioID) {
-		this.usuarioID = usuarioID;
-	}
-
 	@Override
-	public String toString() {
-		return "ContasDTO [nomeConta=" + nome + ", valor=" + valor + ", tipo=" + tipo + ", usuarioID=" + usuarioID
-				+ "]";
+	public final boolean equals(Object o) {
+		if (!(o instanceof ContasDTO contasDTO)) return false;
+
+        return id.equals(contasDTO.id) && nome.equals(contasDTO.nome) && valor.equals(contasDTO.valor) && tipo.equals(contasDTO.tipo) && usuarioID.equals(contasDTO.usuarioID) && data.equals(contasDTO.data);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nome, tipo, usuarioID, valor);
+		int result = id.hashCode();
+		result = 31 * result + nome.hashCode();
+		result = 31 * result + valor.hashCode();
+		result = 31 * result + tipo.hashCode();
+		result = 31 * result + usuarioID.hashCode();
+		result = 31 * result + data.hashCode();
+		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ContasDTO other = (ContasDTO) obj;
-		return Objects.equals(nome, other.nome) && Objects.equals(tipo, other.tipo)
-				&& Objects.equals(usuarioID, other.usuarioID) && Objects.equals(valor, other.valor);
+	public String toString() {
+		return "ContasDTO{" +
+				"id=" + id +
+				", nome='" + nome + '\'' +
+				", valor=" + valor +
+				", tipo='" + tipo + '\'' +
+				", usuarioID=" + usuarioID +
+				", data=" + data +
+				'}';
 	}
-
-
-	
-	
-	
-	
-
 }
