@@ -34,11 +34,37 @@ public class ContasService {
 		mContasVO.setUsuario(mUsuarioVO);
 		repository.save(mContasVO);	
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso");		
+		return ResponseEntity.status(HttpStatus.CREATED).body("Conta cadastrada com sucesso");
 	}
 
-	public List<ContasVO> listarContas(Integer idUsuario){
+	public List<ContasDTO> listarContas(Integer idUsuario){
 		return repository.listarContas(idUsuario);
 	}
 
+	public ResponseEntity<?> deletar(Long id){
+		ContasVO contasVO = new ContasVO();
+		contasVO = repository.buscarPorid(id);
+
+		if (contasVO == null){
+			return ResponseEntity.ok("Nenhuma conta localiza com esse id");
+		}
+
+		repository.delete(contasVO);
+		return ResponseEntity.status(HttpStatus.OK).body("Conta deletada com sucesso");
+	}
+
+	public ResponseEntity<?> alterar(ContasDTO contasDTO){
+		ContasVO contasVO = repository.buscarPorid(contasDTO.getId());
+		if (contasVO == null){
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum conta localizada com esse id");
+		}
+
+		contasVO.setCon_data(contasDTO.getData());
+		contasVO.setCon_nome(contasDTO.getNome());
+		contasVO.setCon_tipo(contasDTO.getTipo());
+		contasVO.setCon_valor(contasDTO.getValor());
+
+		repository.save(contasVO);
+		return ResponseEntity.status(HttpStatus.OK).body(repository.save(contasVO));
+	}
 }

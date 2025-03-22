@@ -14,7 +14,7 @@ public class ContasDTO {
 	private Long id;
 
 	@JsonProperty("nomeConta")
-	@NotNull(message = "Campo ''nome'' no body deve ser informado")
+	@NotNull(message = "Campo ''nomeConta'' no body deve ser informado")
 	private String nome;
 
 	@JsonProperty("valor")

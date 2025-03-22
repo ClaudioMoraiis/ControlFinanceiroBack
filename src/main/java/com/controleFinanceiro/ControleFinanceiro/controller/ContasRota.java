@@ -26,4 +26,14 @@ public class ContasRota {
 	public ResponseEntity<?> listarContas(@RequestParam Integer idUsuario){
 		return ResponseEntity.ok(service.listarContas(idUsuario));
 	}
+
+	@DeleteMapping("/deletar")
+	public ResponseEntity<?> deletar(@RequestParam Long id){
+		return ResponseEntity.ok(service.deletar(id));
+	}
+
+	@PutMapping("/alterar")
+	public ResponseEntity<?> alterar(@Valid @RequestBody ContasDTO contasDTO){
+		return service.alterar(contasDTO);
+	}
 }
