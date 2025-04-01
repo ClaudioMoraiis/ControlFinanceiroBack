@@ -5,10 +5,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.controleFinanceiro.ControleFinanceiro.view.View;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.constraints.NotNull;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ContasDTO {
 	@JsonProperty("con_id")
 	private Long id;
@@ -55,6 +60,11 @@ public class ContasDTO {
 	}
 
 	public ContasDTO(){
+	};
+
+	public ContasDTO(String tipo, BigDecimal valor){
+		this.tipo = tipo;
+		this.valor = valor;
 	};
 
 	public void setNome(String nome) {

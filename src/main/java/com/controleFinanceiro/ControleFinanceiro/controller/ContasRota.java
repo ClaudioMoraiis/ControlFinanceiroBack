@@ -1,6 +1,7 @@
 package com.controleFinanceiro.ControleFinanceiro.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +23,9 @@ public class ContasRota {
 		return service.insert(mContaDTO);
 	}
 
-	@GetMapping("/listarContas")
-	public ResponseEntity<?> listarContas(@RequestParam Integer idUsuario){
-		return ResponseEntity.ok(service.listarContas(idUsuario));
+	@GetMapping("/listarContasPorUsuario")
+	public ResponseEntity<?> listarContasPorUsuario(@RequestParam Integer idUsuario, @RequestParam(required = false) Boolean detalhado){
+		return ResponseEntity.ok(service.listarContasPorUsuario(idUsuario, detalhado));
 	}
 
 	@DeleteMapping("/deletar")

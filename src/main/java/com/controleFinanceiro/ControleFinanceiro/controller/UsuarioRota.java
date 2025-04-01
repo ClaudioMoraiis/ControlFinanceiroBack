@@ -3,6 +3,8 @@ package com.controleFinanceiro.ControleFinanceiro.controller;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
+import com.controleFinanceiro.ControleFinanceiro.dto.WhatsAppDTO;
+import com.controleFinanceiro.ControleFinanceiro.services.WhatsAppService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,9 @@ public class UsuarioRota {
 	
 	@Autowired
 	private EmailService emailService;
+
+	@Autowired
+	WhatsAppService whatsAppService;
 
 	@PostMapping(value = "/cadastrar")
 	public ResponseEntity<?> insertUser(@Valid @RequestBody(required = true) UsuarioVO mUsuario) throws NoSuchAlgorithmException {
@@ -91,5 +96,11 @@ public class UsuarioRota {
 	@GetMapping("idPorEmail")
 	public ResponseEntity<?> getIdByEmail(@RequestParam String email) {
 		return service.getIdByEmail(email);
+	}
+
+	@PostMapping("enviarMensagemWhatsApp")
+	public ResponseEntity<?> enviarMensagemWhatsApp(@Valid @RequestBody WhatsAppDTO whatsAppDTO){
+		whatsAppService.enviarMensagem(whatsAppDTO);
+		return ResponseEntity.ok("Mensagem enviada");
 	}
 }

@@ -1,5 +1,6 @@
 package com.controleFinanceiro.ControleFinanceiro.services;
 
+import com.controleFinanceiro.ControleFinanceiro.dto.ContaTotalDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,10 @@ import com.controleFinanceiro.ControleFinanceiro.vo.UsuarioVO;
 import com.controleFinanceiro.ControleFinanceiro.repositories.ContasRepository;
 import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioRepository;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ContasService {
@@ -37,8 +41,28 @@ public class ContasService {
 		return ResponseEntity.status(HttpStatus.CREATED).body("Conta cadastrada com sucesso");
 	}
 
-	public List<ContasDTO> listarContas(Integer idUsuario){
-		return repository.listarContas(idUsuario);
+	public List<ContasDTO> listarContasPorUsuario(Integer idUsuario, Boolean detalhado){
+		List<ContasDTO> listContaDTO = new ArrayList<>();
+		listContaDTO = repository.listarContasPorUsuario(idUsuario);
+
+		BigDecimal valorMensal = BigDecimal.ZERO;
+		BigDecimal valorExtra = BigDecimal.ZERO;
+
+		for(ContasDTO contasDTO : listContaDTO ){
+			if(contasDTO.getTipo().equals("MENSAL")){
+                valorMensal = valorMensal.add(contasDTO.getValor());
+			}else {
+				valorExtra = valorExtra.add(contasDTO.getValor());
+			}
+		}
+
+		ContasDTO totais = new ContasDTO();
+		totais.setTipo("TOTAIS");
+
+		Map<String, BigDecimal> totaisMap = Map.of("MENSAL", valorMensal, "EXTRA", valorExtra);
+
+		listContaDTO.add(new ContaTotalDTO(totaisMap));
+		return listContaDTO;
 	}
 
 	public ResponseEntity<?> deletar(Long id){
