@@ -2,6 +2,7 @@ package com.controleFinanceiro.ControleFinanceiro.services;
 
 import com.controleFinanceiro.ControleFinanceiro.dto.ContaTotalDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,31 +14,34 @@ import com.controleFinanceiro.ControleFinanceiro.repositories.ContasRepository;
 import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ContasService {
 	@Autowired
 	private ContasRepository repository;
-	
+
 	@Autowired
-	private UsuarioRepository usuarioRepository;	
-	
-	
+	private UsuarioRepository usuarioRepository;
+
+
 	public ResponseEntity<?> insert(ContasDTO mContasDTO){
 		UsuarioVO mUsuarioVO = usuarioRepository.findById(mContasDTO.getUsuarioID())
 				.orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-		
+
 		ContasVO mContasVO = new ContasVO();
 		mContasVO.setCon_nome(mContasDTO.getNome());
 		mContasVO.setCon_tipo(mContasDTO.getTipo());
 		mContasVO.setCon_valor(mContasDTO.getValor());
 		mContasVO.setCon_data(mContasDTO.getData());
 		mContasVO.setUsuario(mUsuarioVO);
-		repository.save(mContasVO);	
-		
+		repository.save(mContasVO);
+
 		return ResponseEntity.status(HttpStatus.CREATED).body("Conta cadastrada com sucesso");
 	}
 
@@ -90,5 +94,31 @@ public class ContasService {
 
 		repository.save(contasVO);
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(contasVO));
+	}
+
+	public List<ContasDTO> buscarContasVencendo() {
+		List<UsuarioVO> listaUsuario = usuarioRepository.findAll();
+		List<ContasDTO> result = new ArrayList<>();
+		LocalDate data = LocalDate.now();
+
+		for (UsuarioVO usuarioVO : listaUsuario) {
+			List<ContasDTO> list = repository.listarContasPorUsuario(Math.toIntExact(usuarioVO.getUsu_id()));
+
+			if (list != null) {
+				LocalDate dataInicial = LocalDate.now().minusDays(1);
+				LocalDate dataFinal = dataInicial.plusDays(5);
+				List<ContasDTO> filteredList = list.stream()
+						.filter(contasDTO ->
+								contasDTO.getData().isAfter(dataInicial) &&
+								contasDTO.getData().isBefore(dataFinal) &&
+								contasDTO.getTipo().equals("MENSAL"))
+						.collect(Collectors.toList());
+
+				result.addAll(filteredList);
+			}
+		}
+
+		return result;
+
 	}
 }
