@@ -2,81 +2,87 @@ package com.controleFinanceiro.ControleFinanceiro.services;
 
 import java.security.NoSuchAlgorithmException;
 
+import com.controleFinanceiro.ControleFinanceiro.user.UserROle;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.controleFinanceiro.ControleFinanceiro.dto.UsuarioLoginDTO;
 import com.controleFinanceiro.ControleFinanceiro.vo.UsuarioVO;
 import com.controleFinanceiro.ControleFinanceiro.repositories.UsuarioRepository;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class UsuarioService {
-	
-	@Autowired
-	private UsuarioRepository repository;	
 
-	    	
-	public ResponseEntity<?> insertUser(UsuarioVO mUsuarioVO) throws NoSuchAlgorithmException {		
-		
-		if (mUsuarioVO.getUsu_name() == null || mUsuarioVO.getUsu_name().isBlank()) {
-			ResponseEntity.ok("Campo ''nome'' é obrigatório");			
-		}
-		
-		if (mUsuarioVO.getUsu_email() == null || mUsuarioVO.getUsu_email().isBlank()) {
-			ResponseEntity.ok("Campo ''email'' é obrigatório");
-		}
-		
-		if (mUsuarioVO.getUsu_password() == null || mUsuarioVO.getUsu_password().isBlank()) {
-			ResponseEntity.ok("Campo ''senha'' é obrigatório");
-		}	
-		
-		if (repository.findByEmail(mUsuarioVO.getUsu_email()) != null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já cadastrado.");
-		}		
-		
-		repository.save(mUsuarioVO);
-		return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso!");
-	}
-	
-	
-	public UsuarioVO findByName(String name) {
-		return repository.findByUsuName(name);
-	}
+    @Autowired
+    private UsuarioRepository repository;
 
-	public UsuarioVO findByEmail(String email) {
-		return repository.findByEmail(email);		
-	}
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	public ResponseEntity<?> login(UsuarioLoginDTO loginDTO) {
-		UsuarioVO usuarioVO = repository.findByEmail(loginDTO.getUsu_email());
-		
-		if(usuarioVO == null) {
-			return ResponseEntity.ok("E-mail ou senha inválida");
-		}
-		
-		if (usuarioVO.getUsu_password().equals(loginDTO.getUsu_password())) {
-			return ResponseEntity.ok(true);
-		} else {
-			return ResponseEntity.ok("E-mail ou senha inválida");
-		}
-	}
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	public ResponseEntity<?> getIdByEmail(String email){
-		Integer usuarioId = repository.getIdByEmail(email);
-		if ((usuarioId == null) || (usuarioId == 0)){
-			ResponseEntity.ok("Nenhum usuário localizado com esse email");
-		}
+    @Autowired
+    TokenService tokenService;
 
-		return ResponseEntity.status(HttpStatus.OK).body(usuarioId);
-	}
 
-	public ResponseEntity<?> findUserByEmail(String email){
-		UsuarioVO usuarioVO = new UsuarioVO();
-		usuarioVO = repository.findByEmail(email);
+    public ResponseEntity<?> insertUser(@RequestBody @Valid UsuarioVO mUsuarioVO) throws NoSuchAlgorithmException {
+        if (repository.findByEmail(mUsuarioVO.getUsu_email()) != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já cadastrado.");
+        }
 
-		return ResponseEntity.ok(usuarioVO.getUsu_name());
-	}
+        String senhaCriptografada = passwordEncoder.encode(mUsuarioVO.getUsu_password());
+
+        mUsuarioVO.setUsu_password(senhaCriptografada);
+        mUsuarioVO.setUsu_role(UserROle.ADMIN);
+
+        repository.save(mUsuarioVO);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso!");
+    }
+
+    public UsuarioVO findByName(String name) {
+        return repository.findByUsuName(name);
+    }
+
+    public UsuarioVO findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
+    public ResponseEntity<?> login(@RequestBody UsuarioLoginDTO loginDTO) {
+        try {
+            var authToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsu_email(), loginDTO.getUsu_password());
+            var auth = authenticationManager.authenticate(authToken);
+
+            var token = tokenService.generateToken((UsuarioVO) auth.getPrincipal());
+            return ResponseEntity.ok("Login realizado com sucesso\n" + token);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Erro: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> getIdByEmail(String email) {
+        Integer usuarioId = repository.getIdByEmail(email);
+        if ((usuarioId == null) || (usuarioId == 0)) {
+            ResponseEntity.ok("Nenhum usuário localizado com esse email");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioId);
+    }
+
+    public ResponseEntity<?> findUserByEmail(String email) {
+        UsuarioVO usuarioVO = new UsuarioVO();
+        usuarioVO = repository.findByEmail(email);
+
+        return ResponseEntity.ok(usuarioVO.getUsu_name());
+    }
 
 }
