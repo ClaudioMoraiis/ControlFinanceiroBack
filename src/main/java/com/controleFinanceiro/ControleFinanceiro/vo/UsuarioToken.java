@@ -30,6 +30,9 @@ public class UsuarioToken {
     
     @Column(name = "uto_dthr_expiracao", nullable = false)
     private LocalDateTime uto_dthr_expiracao;
+
+    @Column(name = "uto_ativo", nullable = false)
+    private Boolean uto_ativo;
     
     public UsuarioToken(UsuarioVO usuarioVO) {
         if (usuarioVO == null) {
@@ -76,6 +79,14 @@ public class UsuarioToken {
 
     public void setUto_dthr_expiracao(LocalDateTime uto_dthr_expiracao) {
         this.uto_dthr_expiracao = uto_dthr_expiracao;
+    }
+
+    public void setUto_ativo(Boolean uto_ativo){
+        this.uto_ativo = uto_ativo;
+    }
+
+    public Boolean get_uto_ativo(){
+        return uto_ativo;
     }
 
     @Override

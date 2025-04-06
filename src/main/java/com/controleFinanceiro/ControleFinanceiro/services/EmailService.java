@@ -56,6 +56,7 @@ public class EmailService {
             String novoToken = UUID.randomUUID().toString();
             usuarioToken.setUto_token(novoToken);
             usuarioToken.setUto_dthr_expiracao(LocalDateTime.now().plusHours(1));
+            usuarioToken.setUto_ativo(true);
             usuarioTokenRepository.save(usuarioToken);
 
             String token = usuarioToken.getUto_token();
@@ -91,7 +92,8 @@ public class EmailService {
         }
 
         Optional<UsuarioToken> usuarioToken = usuarioTokenRepository.findByUtotoken(token);
-        if (usuarioToken.isEmpty() || usuarioToken.get().getUto_dthr_expiracao().isBefore(LocalDateTime.now())) {
+        if (usuarioToken.isEmpty() || usuarioToken.get().getUto_dthr_expiracao().isBefore(LocalDateTime.now()) ||
+            usuarioToken.get().get_uto_ativo().equals(false)) {
             return ResponseEntity.badRequest().body("Token inválido ou expirado");
         }
 
@@ -102,10 +104,9 @@ public class EmailService {
         UsuarioVO usuario = usuarioToken.get().getUsuario();
         String senhaCriptografada = passwordEncoder.encode(novaSenha);
         usuario.setUsu_password(senhaCriptografada);
+        usuarioToken.get().setUto_ativo(false);
 
         repository.save(usuario);
-        usuarioToken.get().setUto_dthr_expiracao(LocalDateTime.now());
-
         return ResponseEntity.ok("Senha redefinida com sucesso!");
     }
 
