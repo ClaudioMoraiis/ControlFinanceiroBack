@@ -6,6 +6,7 @@ import com.controleFinanceiro.ControleFinanceiro.user.UserROle;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -79,8 +80,16 @@ public class UsuarioService {
     }
 
     public ResponseEntity<?> findUserByEmail(String email) {
+        if(email == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("E-mail não informado");
+        }
+
         UsuarioVO usuarioVO = new UsuarioVO();
         usuarioVO = repository.findByEmail(email);
+
+        if (usuarioVO == null){
+            return ResponseEntity.ok("Nenhum usuário encontrado com esse email");
+        }
 
         return ResponseEntity.ok(usuarioVO.getUsu_name());
     }

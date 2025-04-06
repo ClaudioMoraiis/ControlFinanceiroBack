@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.controleFinanceiro.ControleFinanceiro.vo.UsuarioToken;
@@ -31,6 +32,9 @@ public class EmailService {
 
     @Autowired
     private UsuarioTokenRepository usuarioTokenRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final JavaMailSender mailSender;
     public ResponseEntity<?> enviarEmailRecuperacaoSenha;
@@ -102,8 +106,11 @@ public class EmailService {
         }
 
         UsuarioVO usuario = usuarioToken.get().getUsuario();
-        usuario.setUsu_password(novaSenha);
+        String senhaCriptografada = passwordEncoder.encode(usuario.getUsu_password());
+        usuario.setUsu_password(senhaCriptografada);
+
         repository.save(usuario);
+        usuarioToken.get().setUto_dthr_expiracao(LocalDateTime.now());
 
         return ResponseEntity.ok("Senha redefinida com sucesso!");
     }
@@ -187,7 +194,4 @@ public class EmailService {
 
         mailSender.send(mensagem);
     }
-
-
-
 }
