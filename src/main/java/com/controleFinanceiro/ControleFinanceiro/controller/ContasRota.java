@@ -23,7 +23,7 @@ public class ContasRota {
 		return service.insert(mContaDTO);
 	}
 
-	@GetMapping("/listarContasPorUsuario")
+	@GetMapping("/listar-contas-por-usuario")
 	public ResponseEntity<?> listarContasPorUsuario(@RequestParam Integer idUsuario, @RequestParam(required = false) Boolean detalhado){
 		return ResponseEntity.ok(service.listarContasPorUsuario(idUsuario, detalhado));
 	}

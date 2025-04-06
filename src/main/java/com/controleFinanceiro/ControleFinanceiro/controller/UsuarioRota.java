@@ -87,7 +87,7 @@ public class UsuarioRota {
 		return service.findUserByEmail(email);
 	}
 
-	@GetMapping("idPorEmail")
+	@GetMapping("id-por-email")
 	public ResponseEntity<?> getIdByEmail(@RequestParam String email) {
 		return service.getIdByEmail(email);
 	}
