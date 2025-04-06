@@ -45,12 +45,6 @@ public class EmailService {
 
     public ResponseEntity<?> enviarEmailRecuperacaoSenha(String para) throws MessagingException {
         Optional<UsuarioVO> usuarioVO = Optional.ofNullable(repository.findByEmail(para));
-        String getTokenAtivo = usuarioTokenRepository.getTokenAtivo(para, LocalDateTime.now());
-        Optional<UsuarioToken> existeToken = Optional.ofNullable(usuarioTokenRepository.findByEmail(para));
-
-        if (getTokenAtivo != null) {
-            return ResponseEntity.ok("E-mail já enviado, verifique");
-        }
 
         if (usuarioVO.isEmpty()) {
             return ResponseEntity.ok(
@@ -106,7 +100,7 @@ public class EmailService {
         }
 
         UsuarioVO usuario = usuarioToken.get().getUsuario();
-        String senhaCriptografada = passwordEncoder.encode(usuario.getUsu_password());
+        String senhaCriptografada = passwordEncoder.encode(novaSenha);
         usuario.setUsu_password(senhaCriptografada);
 
         repository.save(usuario);

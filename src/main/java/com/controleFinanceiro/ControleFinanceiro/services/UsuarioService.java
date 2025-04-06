@@ -59,7 +59,7 @@ public class UsuarioService {
 
     public ResponseEntity<?> login(@RequestBody UsuarioLoginDTO loginDTO) {
         try {
-            var authToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsu_email(), loginDTO.getUsu_password());
+            var authToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsu_email().toUpperCase(), loginDTO.getUsu_password());
             var auth = authenticationManager.authenticate(authToken);
 
             var token = tokenService.generateToken((UsuarioVO) auth.getPrincipal());
