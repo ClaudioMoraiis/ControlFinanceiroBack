@@ -39,7 +39,7 @@ public class AgendadorService {
         contasRepository.excluirRegistrosVencidos(data);
     }
 
-    @Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 0 20 * * ?")
     public void enviarEmailUsuario() {
         List<ContasDTO> listContas = contasService.buscarContasVencendo();
         for (ContasDTO contasDTO : listContas) {
