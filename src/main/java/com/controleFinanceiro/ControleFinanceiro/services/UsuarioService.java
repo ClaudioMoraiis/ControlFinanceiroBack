@@ -59,6 +59,10 @@ public class UsuarioService {
 
     public ResponseEntity<?> login(@RequestBody UsuarioLoginDTO loginDTO) {
         try {
+            UsuarioVO usuarioVO = repository.findByEmail(loginDTO.getUsu_email());
+            if (usuarioVO == null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum usuário localizado");
+            }
             var authToken = new UsernamePasswordAuthenticationToken(loginDTO.getUsu_email().toUpperCase(), loginDTO.getUsu_password());
             var auth = authenticationManager.authenticate(authToken);
 
@@ -73,7 +77,7 @@ public class UsuarioService {
     public ResponseEntity<?> getIdByEmail(String email) {
         Integer usuarioId = repository.getIdByEmail(email);
         if ((usuarioId == null) || (usuarioId == 0)) {
-            ResponseEntity.ok("Nenhum usuário localizado com esse email");
+            return ResponseEntity.ok("Nenhum usuário localizado com esse email");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(usuarioId);
