@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer{
                 .allowedOrigins(
                         "http://localhost:5173",
                         "http://192.168.18.22:5173",
-                        "https://controle-financeiro-front-pi.vercel.app")
+                        "https://controle-financeiro-gilt.vercel.app")
                 .allowedMethods("*")
                 .allowedHeaders("*") 
                 .allowCredentials(true); 

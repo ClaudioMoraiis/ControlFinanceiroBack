@@ -33,9 +33,9 @@ public class AgendadorService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    @Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 0 20 * * ?")
     public void limparContasVencidas() {
-        LocalDate data = LocalDate.now().minusMonths(3);
+        LocalDate data = LocalDate.now().minusMonths(6);
         contasRepository.excluirRegistrosVencidos(data);
     }
 
