@@ -61,8 +61,8 @@ public class EmailService {
 
             String token = usuarioToken.getUto_token();
 
+            String link = "https://controle-financeiro-gilt.vercel.app/RedefinirSenha?token=" + token;
             String assunto = "Recuperação senha";
-            String link = "http://192.168.18.22:5173/RedefinirSenha?token=" + token;
             String conteudo = "<p>Clique no link abaixo para redefinir sua senha:</p>" + "<p><a href=\"" + link
                     + "\">Redefinir Senha</a></p>";
 
